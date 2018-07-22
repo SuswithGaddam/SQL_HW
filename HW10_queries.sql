@@ -91,4 +91,35 @@ UPDATE actor a
 
 SHOW CREATE TABLE address;
 
+-- 6a. Use JOIN to display the first and last names, as well as the address, of each staff member. Use the tables staff and address:
+
+SELECT first_name, last_name, address from staff s
+INNER JOIN address a ON a.address_id = s.address_id;
+
+-- 6b. Use JOIN to display the total amount rung up by each staff member in August of 2005. Use tables staff and payment.
+
+SELECT first_name, last_name, sum(amount) FROM staff s
+INNER JOIN payment p ON s.staff_id = p.staff_id
+WHERE month(payment_date) = 08 AND year(payment_date) = 2005
+GROUP BY s.staff_id;
+
+-- 6c. List each film and the number of actors who are listed for that film. Use tables film_actor and film. Use inner join.
+
+SELECT title, count(actor_id) AS 'Number of Actors' from film f
+INNER JOIN film_actor a ON f.film_id = a.film_id
+GROUP BY title;
+
+-- 6d. How many copies of the film Hunchback Impossible exist in the inventory system?
+
+select f.film_id, title, count(i.film_id) AS 'Number of Copies Available' from film f
+INNER JOIN inventory i ON f.film_id = i.film_id
+WHERE title = 'Hunchback Impossible';
+
+-- 6e. Using the tables payment and customer and the JOIN command, list the total paid by each customer.
+-- List the customers alphabetically by last name:
+
+SELECT first_name, last_name, sum(amount) AS 'Total Paid' from customer c
+INNER JOIN payment p ON c.customer_id = p.customer_id
+group by p.customer_id
+order by last_name;
 
